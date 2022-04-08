@@ -1,0 +1,35 @@
+version: '2'
+# db-name: postgres
+# db-username: postgres 
+# db-pass: example1
+# db_server_servuce_name: postgres:5432
+services:
+#set the containers
+  drupal:
+  #container-1
+    image: custom-drupal
+    #name the custom image 
+    build: .
+    #build from the current Dockerfile path location
+    ports:
+      - "8080:80"
+    volumes:
+    #set the network bind link location
+      - drupal-modules:/var/www/html/modules
+      - drupal-profiles:/var/www/html/profiles       
+      - drupal-sites:/var/www/html/sites      
+      - drupal-themes:/var/www/html/themes
+  postgres:
+  #container-2
+    image: postgres:12.1
+    environment:
+      - POSTGRES_PASSWORD=mypasswd
+    volumes:
+      - drupal-data:/var/lib/postgresql/data
+
+volumes:
+  drupal-data:
+  drupal-modules:
+  drupal-profiles:
+  drupal-sites:
+  drupal-themes:
